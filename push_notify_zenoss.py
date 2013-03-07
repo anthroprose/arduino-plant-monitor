@@ -63,7 +63,7 @@ class App():
                         else:
                             pprint.pprint('fallthough')
                 
-                        time.sleep(30)
+                        time.sleep(300)
                 
         except:
             self.success = False
