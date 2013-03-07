@@ -22,6 +22,7 @@ import serial
 from daemon import runner
 from datetime import datetime
 from os import environ
+from config import Config
 
 class App():
    
@@ -33,13 +34,32 @@ class App():
         self.pidfile_timeout = 5
         self.success = True
 
+        f = file('config.cfg')
+        cfg = Config(f)
+        
+        if cfg.host:
+            self.host = cfg.host
+            
+        if cfg.proto:
+            self.proto = cfg.proto
+            
+        if cfg.user:
+            self.user = cfg.user
+            
+        if cfg.passwd:
+            self.passwd = cfg.passwd
+            
+        if cfg.usb:
+            self.usb = cfg.usb
+            
+            
         
     def run(self):
         
         try:
             while True:
                 
-                ser = serial.Serial("/dev/ttyUSB0", 9600)
+                ser = serial.Serial(self.usb, 9600)
                 s = ser.readline().strip()
             
                 if s != '\x00':
@@ -82,7 +102,7 @@ class App():
         }
 
         path = '/zport/dmd/evconsole_router'
-        target = urlparse(self.endpoint+path)
+        target = urlparse(str(self.proto) + '://' + str(self.host) + path)
         method = 'POST'
         
         body = '{"action":"EventsRouter","method":"add_event","data":[{"device":"' + str(sensor) + '", "summary":"' + str(msg) + '", "component":"' + str(component) + '", "severity":"' + str(severity) + '", "evclass":"/Arduino/Sensors/Plants", "evclasskey":"" }],"tid":1}'
