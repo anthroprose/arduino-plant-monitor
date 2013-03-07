@@ -32,9 +32,7 @@ class App():
         self.pidfile_path =  '/var/run/plant_monitor.pid'
         self.pidfile_timeout = 5
         self.success = True
-        self.endpoint = 'https://gom-1.zenaas.com'
-        self.user = 'admin'
-        self.passwd = 'z3n0ss'
+
         
     def run(self):
         
